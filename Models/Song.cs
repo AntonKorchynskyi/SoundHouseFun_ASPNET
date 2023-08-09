@@ -9,14 +9,16 @@ namespace SoundHouseFun.Models
         [Display(Name = "Album")]
         public int AlbumId { get; set; }
 
-        [Required()]
+        [Required(), MaxLength(100)]
         public string Name { get; set; }
 
+        [MaxLength(50)]
         public string Genre { get; set; }
 
-        [Required()]
+        [Required(), MaxLength(50)]
         public string Singer { get; set; }
 
+        [Required()]
         public DateTime ReleaseDate { get; set; }
 
         public Album? Album { get; set; }
