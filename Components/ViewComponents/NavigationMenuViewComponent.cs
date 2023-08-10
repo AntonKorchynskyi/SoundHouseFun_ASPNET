@@ -16,8 +16,8 @@ namespace SoundHouseFun.Components.ViewComponents
             new MenuItem { Controller = "Orders", Action = "Orders", Label = "Admin", Authorized = true, AllowedRoles = new List<string> { "Administrator" }, DropdownItems = new List<MenuItem> {
                 new MenuItem { Controller = "Orders", Action = "Index", Label = "Orders" },
                 new MenuItem { Controller = "Carts", Action = "Index", Label = "Carts" },
-                new MenuItem { Controller = "Departments", Action = "Index", Label = "Departments" },
-                new MenuItem { Controller = "Products", Action = "Index", Label = "Products" },
+                new MenuItem { Controller = "Albums", Action = "Index", Label = "Albums" },
+                new MenuItem { Controller = "Songs", Action = "Index", Label = "Songs" },
             }},
             new MenuItem { Controller = "Home", Action = "About", Label = "About" },
             new MenuItem { Controller = "Home", Action = "Contact", Label = "Contact" },

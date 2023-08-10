@@ -1,6 +1,6 @@
 ﻿namespace SoundHouseFun.Models
 {
-    public class MenuItem
+    public struct MenuItem
     {
         public string Controller { get; set; }
         public string Action { get; set; }

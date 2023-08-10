@@ -65,6 +65,16 @@ namespace SoundHouseFun.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            // If we got this far, something failed. Log the ModelState errors
+            var errors = ModelState
+                .Where(x => x.Value.Errors.Count > 0)
+                .Select(x => new { x.Key, x.Value.Errors })
+                .ToArray();
+
+            // You can put a breakpoint here to inspect 'errors' in the debugger
+            System.Diagnostics.Debug.WriteLine(errors);
+
             ViewData["AlbumId"] = new SelectList(_context.Albums, "Id", "Name", song.AlbumId);
             return View(song);
         }
@@ -118,6 +128,16 @@ namespace SoundHouseFun.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            // If we got this far, something failed. Log the ModelState errors
+            var errors = ModelState
+                .Where(x => x.Value.Errors.Count > 0)
+                .Select(x => new { x.Key, x.Value.Errors })
+                .ToArray();
+
+            // You can put a breakpoint here to inspect 'errors' in the debugger
+            System.Diagnostics.Debug.WriteLine(errors);
+
             ViewData["AlbumId"] = new SelectList(_context.Albums, "Id", "Name", song.AlbumId);
             return View(song);
         }
@@ -163,6 +183,31 @@ namespace SoundHouseFun.Controllers
         private bool SongExists(int id)
         {
           return (_context.Songs?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        private async Task<string> UploadPhoto(IFormFile Photo)
+        {
+            if (Photo != null)
+            {
+                // Get temp location
+                var filePath = Path.GetTempFileName();
+
+                // Create a unique name so we don't overwrite any existing photos
+                // eg: photo.jpg => abcdefg123456890-photo.jpg (Using the Globally Unique Identifier (GUID))
+                var fileName = Guid.NewGuid() + "-" + Photo.FileName;
+
+                // Set destination path dynamically so it works on any system (double slashes escape the characters)
+                var uploadPath = System.IO.Directory.GetCurrentDirectory() + "\\wwwroot\\img\\songs\\" + fileName;
+
+                // Execute the file copy
+                using var stream = new FileStream(uploadPath, FileMode.Create);
+                await Photo.CopyToAsync(stream);
+
+                // Set the Photo property name of the new Song object
+                return fileName;
+            }
+
+            return null;
         }
     }
 }
