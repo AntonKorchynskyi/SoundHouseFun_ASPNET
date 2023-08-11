@@ -36,12 +36,18 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.ReleaseDate)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Album)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Audio)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Album.Name)
+        <dd class="col-sm-2">
+            @Html.DisplayFor(model => model.Audio)
         </dd>
+        <dd class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Album)
+        </dd>
+        <dt class = "col-sm-10">
+            @Html.DisplayFor(model => model.Album.Name)
+        </dt>
     </dl>
     
     <form asp-action="Delete">

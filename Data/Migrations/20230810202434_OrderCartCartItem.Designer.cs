@@ -12,8 +12,8 @@ using SoundHouseFun.Data;
 namespace SoundHouseFun.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230810185807_AddCartCartItemOrderToDB")]
-    partial class AddCartCartItemOrderToDB
+    [Migration("20230810202434_OrderCartCartItem")]
+    partial class OrderCartCartItem
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -190,15 +190,13 @@ namespace SoundHouseFun.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId1")
+                    b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Carts");
                 });
@@ -243,6 +241,9 @@ namespace SoundHouseFun.Data.Migrations
                     b.Property<int>("CartId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("CartId1")
+                        .HasColumnType("int");
+
                     b.Property<int>("PaymentMethod")
                         .HasColumnType("int");
 
@@ -259,6 +260,10 @@ namespace SoundHouseFun.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CartId");
+
+                    b.HasIndex("CartId1")
+                        .IsUnique()
+                        .HasFilter("[CartId1] IS NOT NULL");
 
                     b.HasIndex("UserId");
 
@@ -421,7 +426,9 @@ namespace SoundHouseFun.Data.Migrations
                 {
                     b.HasOne("SoundHouseFun.Models.User", "User")
                         .WithMany("Cart")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -431,7 +438,7 @@ namespace SoundHouseFun.Data.Migrations
                     b.HasOne("SoundHouseFun.Models.Cart", "Cart")
                         .WithMany("CartItems")
                         .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SoundHouseFun.Models.Song", "Song")
@@ -450,8 +457,12 @@ namespace SoundHouseFun.Data.Migrations
                     b.HasOne("SoundHouseFun.Models.Cart", "Cart")
                         .WithMany()
                         .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("SoundHouseFun.Models.Cart", null)
+                        .WithOne("Order")
+                        .HasForeignKey("SoundHouseFun.Models.Order", "CartId1");
 
                     b.HasOne("SoundHouseFun.Models.User", "User")
                         .WithMany("Order")
@@ -483,6 +494,8 @@ namespace SoundHouseFun.Data.Migrations
             modelBuilder.Entity("SoundHouseFun.Models.Cart", b =>
                 {
                     b.Navigation("CartItems");
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("SoundHouseFun.Models.User", b =>

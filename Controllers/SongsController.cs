@@ -57,10 +57,31 @@ namespace SoundHouseFun.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,AlbumId,Name,Genre,Singer,ReleaseDate")] Song song)
+        public async Task<IActionResult> Create([Bind("Id,AlbumId,Name,Genre,Singer,ReleaseDate,Audio")] Song song)
         {
+
+
             if (ModelState.IsValid)
             {
+                /*
+                // Call the UploadAudio method to handle the uploaded file
+                var uploadedAudioFileName = await UploadAudio(song.Audio);
+
+                // Handle the result from UploadAudio (e.g., error messages or success)
+                if (uploadedAudioFileName == "Invalid audio file format")
+                {
+                    ModelState.AddModelError("Audio", "Invalid audio file format");
+                    // Handle the error, perhaps redisplay the form with the error message
+                    return View(song);
+                }
+                else if (uploadedAudioFileName != null)
+                {
+                    // The file was successfully uploaded, you can save the file name or perform further actions
+                    model.AudioFileName = uploadedAudioFileName;
+                    // Save the model to your database or perform other actions
+                    // ...
+                }*/
+
                 _context.Add(song);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -101,7 +122,7 @@ namespace SoundHouseFun.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,AlbumId,Name,Genre,Singer,ReleaseDate")] Song song)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,AlbumId,Name,Genre,Singer,ReleaseDate,Audio")] Song song)
         {
             if (id != song.Id)
             {
@@ -185,29 +206,48 @@ namespace SoundHouseFun.Controllers
           return (_context.Songs?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
-        private async Task<string> UploadPhoto(IFormFile Photo)
+        private async Task<string> UploadAudio(IFormFile Audio)
         {
-            if (Photo != null)
+            if (Audio != null)
             {
+                // Check the file extension and content type
+                if (!IsAudioFile(Audio.FileName, Audio.ContentType))
+                {
+                    // Return an error message or throw an exception
+                    return "Invalid audio file format";
+                }
+
                 // Get temp location
                 var filePath = Path.GetTempFileName();
 
                 // Create a unique name so we don't overwrite any existing photos
-                // eg: photo.jpg => abcdefg123456890-photo.jpg (Using the Globally Unique Identifier (GUID))
-                var fileName = Guid.NewGuid() + "-" + Photo.FileName;
+                // eg: Audio => abcdefg123456890-Audio (Using the Globally Unique Identifier (GUID))
+                var fileName = Guid.NewGuid() + "-" + Audio.FileName;
 
                 // Set destination path dynamically so it works on any system (double slashes escape the characters)
-                var uploadPath = System.IO.Directory.GetCurrentDirectory() + "\\wwwroot\\img\\songs\\" + fileName;
+                var uploadPath = System.IO.Directory.GetCurrentDirectory() + "\\wwwroot\\audio\\" + fileName;
 
                 // Execute the file copy
                 using var stream = new FileStream(uploadPath, FileMode.Create);
-                await Photo.CopyToAsync(stream);
+                await Audio.CopyToAsync(stream);
 
                 // Set the Photo property name of the new Song object
                 return fileName;
             }
 
             return null;
+        }
+
+        // Used ChatGPT
+        // Helper function to check if the file is a valid audio file based on extension and content type
+        private bool IsAudioFile(string fileName, string contentType)
+        {
+            var validExtensions = new[] { ".mp3", ".wav", ".ogg", ".flac", ".aac" };
+            var validContentTypes = new[] { "audio/mpeg", "audio/wav", "audio/ogg", "audio/flac", "audio/aac" };
+
+            var extension = Path.GetExtension(fileName);
+            return validExtensions.Contains(extension.ToLower()) &&
+                   validContentTypes.Contains(contentType.ToLower());
         }
     }
 }

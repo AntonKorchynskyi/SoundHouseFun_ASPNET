@@ -21,6 +21,8 @@ namespace SoundHouseFun.Models
         [Required()]
         public DateTime ReleaseDate { get; set; }
 
+        public string? Audio { get; set; }
+
         public Album? Album { get; set; }
 
     }
