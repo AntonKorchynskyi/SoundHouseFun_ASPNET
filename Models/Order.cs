@@ -6,6 +6,7 @@
         Mastercard,
         InteracDebit,
         PayPal,
+        AmericanExpress,
         Stripe
     }
 
