@@ -1,0 +1,71 @@
+﻿@model SoundHouseFun.Models.Album
+
+@{
+    ViewData["Title"] = "Buy Songs from " + Model.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Songs.FirstOrDefault().Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Songs.FirstOrDefault().Genre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Songs.FirstOrDefault().Singer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Songs.FirstOrDefault().ReleaseDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Songs.FirstOrDefault().Audio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Songs.FirstOrDefault().Album)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Songs) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Genre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Singer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReleaseDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Audio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Album.Name)
+            </td>
+            <td>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <form class="d-inline" asp-action="AddToCart">
+                        <input type="hidden" name="songId" value="@item.Id" />
+                        <input type="hidden" name="quantity" value="1" />
+
+                        <input type="submit" value="Quick Add" class="btn btn-primary" />
+                    </form>
+                }
+
+                <a class="btn btn-secondary" asp-action="SongDetails" asp-route-id="@item.Id">View Song</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
