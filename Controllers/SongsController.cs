@@ -59,7 +59,7 @@ namespace SoundHouseFun.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,AlbumId,Name,Genre,Singer,ReleaseDate,Audio")] Song song)
+        public async Task<IActionResult> Create([Bind("Id,AlbumId,Name,Genre,Singer,ReleaseDate,Audio,Price")] Song song)
         {
 
 
@@ -124,7 +124,7 @@ namespace SoundHouseFun.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,AlbumId,Name,Genre,Singer,ReleaseDate,Audio")] Song song)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,AlbumId,Name,Genre,Singer,ReleaseDate,Audio,Price")] Song song)
         {
             if (id != song.Id)
             {
