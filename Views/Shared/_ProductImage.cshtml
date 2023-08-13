@@ -1,7 +1,18 @@
 ﻿@model SoundHouseFun.Models.Album
 
 @{
-    var photoPath = Model != null && !string.IsNullOrEmpty(Model.Photo) ? "/img/albums/" + Model.Photo : "/img/placeholder.png";
+    //var photoPath = Model != null && !string.IsNullOrEmpty(Model.Photo) ? "/img/albums/" + Model.Photo : "/img/placeholder.png";
+
+    string photoPath = "/img/placeholder.png";
+
+    if (Model != null && !string.IsNullOrEmpty(Model.Photo))
+    {
+        string filePath = "wwwroot/img" + "/albums/" + Model.Photo;
+        if (System.IO.File.Exists(filePath))
+        {
+            photoPath = "/img/albums/" + Model.Photo;
+        }
+    }
 }
 
 <img id="photo-preview" class="img-thumbnail" src="@photoPath" alt="Product Image" />

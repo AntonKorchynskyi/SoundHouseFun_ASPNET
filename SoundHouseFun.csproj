@@ -21,8 +21,4 @@
     <PackageReference Include="Stripe.net" Version="41.26.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\audio\" />
-  </ItemGroup>
-
 </Project>

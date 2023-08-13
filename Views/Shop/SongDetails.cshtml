@@ -62,11 +62,11 @@
             <input type="hidden" name="songId" value="@Model.Id" />
 
             <div class="input-group">
-                <div class="input-group-prepend">
+                <div class="input-group-prepend" hidden>
                     <span class="input-group-text">Quantity</span>
                 </div>
 
-                <input class="form-control" type="number" name="quantity" min="1" step="1" value="1" />
+                <input class="form-control" type="hidden" name="quantity" min="1" step="1" value="1" />
 
                 <div class="input-group-append">
                     <input type="submit" value="Add to Cart" class="btn btn-primary" />

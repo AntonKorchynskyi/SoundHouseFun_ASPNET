@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SoundHouseFun.Data;
 using SoundHouseFun.Models;
+using System.Diagnostics;
+using Microsoft.Extensions.Hosting.Internal;
+
 
 namespace SoundHouseFun.Controllers
 {
@@ -15,10 +18,12 @@ namespace SoundHouseFun.Controllers
     public class AlbumsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public AlbumsController(ApplicationDbContext context)
+        public AlbumsController(ApplicationDbContext context, IWebHostEnvironment hostingEnvironment)
         {
             _context = context;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         // GET: Albums
@@ -58,14 +63,29 @@ namespace SoundHouseFun.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Photo")] Album album)
+        public async Task<IActionResult> Create([Bind("Id,Name,Photo")] Album album, IFormFile? Photo)
         {
             if (ModelState.IsValid)
             {
+                // Upload the photo
+                var photoFileName = await UploadPhoto(Photo);
+                if (photoFileName != null)
+                {
+                    // Save the photo filename in the album object
+                    album.Photo = photoFileName;
+                }
+
                 _context.Add(album);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            /* if (ModelState.IsValid)
+            {
+                _context.Add(album);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            } */
 
             // If we got this far, something failed. Log the ModelState errors
             var errors = ModelState
@@ -184,18 +204,21 @@ namespace SoundHouseFun.Controllers
 
         private async Task<string> UploadPhoto(IFormFile Photo)
         {
+            Debug.WriteLine("step 1");
+
             if (Photo != null)
             {
+                Debug.WriteLine("step 2");
                 // Get temp location
                 var filePath = Path.GetTempFileName();
-
+                Debug.WriteLine(filePath);
                 // Create a unique name so we don't overwrite any existing photos
                 // eg: photo.jpg => abcdefg123456890-photo.jpg (Using the Globally Unique Identifier (GUID))
                 var fileName = Guid.NewGuid() + "-" + Photo.FileName;
-
+                Debug.WriteLine(fileName);
                 // Set destination path dynamically so it works on any system (double slashes escape the characters)
                 var uploadPath = System.IO.Directory.GetCurrentDirectory() + "\\wwwroot\\img\\albums\\" + fileName;
-
+                Debug.WriteLine(uploadPath);
                 // Execute the file copy
                 using var stream = new FileStream(uploadPath, FileMode.Create);
                 await Photo.CopyToAsync(stream);

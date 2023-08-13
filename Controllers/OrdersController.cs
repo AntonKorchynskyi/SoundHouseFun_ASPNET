@@ -7,16 +7,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SoundHouseFun.Data;
 using SoundHouseFun.Models;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting.Internal;
 
 namespace SoundHouseFun.Controllers
 {
     public class OrdersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public OrdersController(ApplicationDbContext context)
+        public OrdersController(ApplicationDbContext context, IWebHostEnvironment hostingEnvironment)
         {
             _context = context;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         // GET: Orders
@@ -170,5 +174,26 @@ namespace SoundHouseFun.Controllers
         {
           return (_context.Orders?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+        public IActionResult DownloadAudio(string audioFileName)
+        {
+            // Assuming audio files are stored in the wwwroot/audio directory
+            var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "audio", audioFileName);
+
+            if (System.IO.File.Exists(filePath))
+            {
+                var fileBytes = System.IO.File.ReadAllBytes(filePath);
+                var contentType = "application/octet-stream"; // You can set the appropriate content type
+
+                // Return the file as a FileResult
+                return File(fileBytes, contentType, audioFileName);
+            }
+            else
+            {
+                // File not found, handle the error (e.g., show an error page)
+                return NotFound();
+            }
+        }
+
     }
 }
