@@ -35,7 +35,23 @@ namespace SoundHouseFun
                     options.ClientSecret = googleAuth["ClientSecret"];
                 });
 
+            // Add dependency so controllers can read config values
+            builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+
+            // Add Sessions
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(5);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
+
+
             var app = builder.Build();
+
+            // Use the session
+            app.UseSession();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

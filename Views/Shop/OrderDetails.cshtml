@@ -1,0 +1,46 @@
+﻿@model SoundHouseFun.Models.Order
+
+@{
+    ViewData["Title"] = "Order Details for " + Model.Cart.User.Email;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Song Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var cartItem in Model.Cart.CartItems)
+            {
+                var subtotal = cartItem.Quantity * cartItem.Price;
+
+                <tr>
+                    <td>@cartItem.Song.Name</td>
+                    <td>@cartItem.Quantity</td>
+                    <td>@cartItem.Price</td>
+                    <td style="text-align: right">@subtotal</td>
+                </tr>
+            }
+        </tbody>
+
+        <tfoot>
+            <tr>
+                <th>Total:</th>
+                <td colspan="3" style="text-align: right">@Model.Total</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<div>
+    <a asp-action="Index">Back to Albums</a>
+</div>
