@@ -80,13 +80,6 @@ namespace SoundHouseFun.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            /* if (ModelState.IsValid)
-            {
-                _context.Add(album);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            } */
-
             // If we got this far, something failed. Log the ModelState errors
             var errors = ModelState
                 .Where(x => x.Value.Errors.Count > 0)
@@ -204,21 +197,16 @@ namespace SoundHouseFun.Controllers
 
         private async Task<string> UploadPhoto(IFormFile Photo)
         {
-            Debug.WriteLine("step 1");
 
             if (Photo != null)
             {
-                Debug.WriteLine("step 2");
                 // Get temp location
                 var filePath = Path.GetTempFileName();
-                Debug.WriteLine(filePath);
                 // Create a unique name so we don't overwrite any existing photos
                 // eg: photo.jpg => abcdefg123456890-photo.jpg (Using the Globally Unique Identifier (GUID))
                 var fileName = Guid.NewGuid() + "-" + Photo.FileName;
-                Debug.WriteLine(fileName);
                 // Set destination path dynamically so it works on any system (double slashes escape the characters)
                 var uploadPath = System.IO.Directory.GetCurrentDirectory() + "\\wwwroot\\img\\albums\\" + fileName;
-                Debug.WriteLine(uploadPath);
                 // Execute the file copy
                 using var stream = new FileStream(uploadPath, FileMode.Create);
                 await Photo.CopyToAsync(stream);

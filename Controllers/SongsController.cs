@@ -208,6 +208,7 @@ namespace SoundHouseFun.Controllers
           return (_context.Songs?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
+        //Audio validation added using ChatGPT
         private async Task<string> UploadAudio(IFormFile Audio)
         {
             if (Audio != null)

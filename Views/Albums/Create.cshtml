@@ -17,6 +17,7 @@
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group">
                 <div class="row">
                     <div class="col-sm-8">
@@ -26,19 +27,21 @@
                     </div>
 
                     <div class="col-sm-4">
-                        <partial name="_ProductImage" model="Model" />
+                        <partial name="_AlbumImage" model="Model" />
                     </div>
                 </div>
             </div>
+            <br />
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
+            <br />
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" type="button" class="btn btn-light">Back to List</a>
 </div>
 
 @section Scripts {

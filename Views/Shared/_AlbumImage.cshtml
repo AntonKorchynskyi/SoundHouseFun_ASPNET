@@ -1,8 +1,7 @@
 ﻿@model SoundHouseFun.Models.Album
 
+<!--Create photoPath-->
 @{
-    //var photoPath = Model != null && !string.IsNullOrEmpty(Model.Photo) ? "/img/albums/" + Model.Photo : "/img/placeholder.png";
-
     string photoPath = "/img/placeholder.png";
 
     if (Model != null && !string.IsNullOrEmpty(Model.Photo))

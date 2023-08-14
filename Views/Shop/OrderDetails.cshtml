@@ -14,7 +14,7 @@
                 <th>Song Name</th>
                 <th>Quantity</th>
                 <th>Price</th>
-                <th>Subtotal</th>
+                <th style="text-align: right">Subtotal</th>
                 <th>Audio</th>
             </tr>
         </thead>
@@ -33,7 +33,7 @@
                         @* Add a link to download the audio file *@
                         @if (!string.IsNullOrEmpty(cartItem.Song.Audio))
                         {
-                            <a asp-controller="Orders" asp-action="DownloadAudio" asp-route-audioFileName="@cartItem.Song.Audio">
+                            <a type="button" class="btn btn-warning" asp-controller="Orders" asp-action="DownloadAudio" asp-route-audioFileName="@cartItem.Song.Audio">
                                 Download Audio
                             </a>
                         }
@@ -52,5 +52,5 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to Albums</a>
+    <a asp-action="Index" type="button" class="btn btn-light">Back to Albums</a>
 </div>

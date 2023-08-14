@@ -17,34 +17,40 @@
                 <label asp-for="UserId" class="control-label"></label>
                 <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
             </div>
+            <br />
             <div class="form-group">
                 <label asp-for="CartId" class="control-label"></label>
                 <select asp-for="CartId" class ="form-control" asp-items="ViewBag.CartId"></select>
             </div>
+            <br />
             <div class="form-group">
                 <label asp-for="Total" class="control-label"></label>
                 <input asp-for="Total" class="form-control" />
                 <span asp-validation-for="Total" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="PaymentReceived" /> @Html.DisplayNameFor(model => model.PaymentReceived)
                 </label>
             </div>
+            <br />
             <div class="form-group">
                 <label asp-for="PaymentMethod" class="control-label"></label>
                 <select asp-for="PaymentMethod" class="form-control"></select>
                 <span asp-validation-for="PaymentMethod" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
+            <br />
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" type="button" class="btn btn-light">Back to List</a>
 </div>
 
 @section Scripts {
