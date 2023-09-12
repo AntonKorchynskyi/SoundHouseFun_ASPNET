@@ -14,7 +14,7 @@ Welcome to SoundHouseFun - Your Destination for Quality Music!
 	
 * Visit SoundHouseFun to access our website.
 
-* Browse through our song catalog, listen to samples, and find the perfect tracks for your collection.
+* Browse through our song catalog and find the perfect tracks for your collection.
 
 * When you find a song you love, you can purchase and download it instantly. No subscriptions, just great music.
 
