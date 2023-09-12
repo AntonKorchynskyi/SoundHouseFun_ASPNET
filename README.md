@@ -24,9 +24,9 @@ Welcome to SoundHouseFun - Your Destination for Quality Music!
 
 ## Developer Info:
 	
-* We work with albums (we do not yet sell those, main parameters are Id, Name, Photo, and Songs), 
-which consist of Songs (which we sell, their main parameters are Id, AlbumId, Name, Genre, Singer, ReleaseDate, Audio, and Price).
-Payment process is completed through the usage of carts, orders and Stripe Api.
+* We work with albums (we do not yet sell those), which consist of Songs (which we sell). 
+
+* Payment process is completed through the usage of carts, orders and Stripe Api.
 
 * GitHub link: https://github.com/AntonKorchynskyi/SoundHouseFun_ASPNET.git
 
